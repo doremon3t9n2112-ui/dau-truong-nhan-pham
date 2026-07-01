@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đại Chiến Vote - Hệ Thống Xác Thực Email</title>
+    <title>Đại Chiến Vote - Đồng Bộ Danh Sách Từ Bảng Tính</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -31,14 +31,11 @@
                 </div>
                 <div>
                     <h1 class="heading-font text-lg font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Đại Chiến Vote</h1>
-                    <p class="text-[10px] text-slate-400 font-semibold uppercase">Hệ Thống Tự Động Xác Thực Email</p>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase">Đồng bộ Tab DanhSachUngVien</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-3">
-                <button onclick="toggleAdminPanel()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded-xl transition-all" title="Cấu hình Admin">
-                    <i class="fa-solid fa-user-gear text-sm"></i>
-                </button>
                 <div id="auth-status-container">
                     <button onclick="openAuthModal()" class="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-lg text-sm hover:bg-emerald-400 transition-all shadow-md">
                         <i class="fa-solid fa-right-to-bracket mr-1"></i> Đăng Ký / Đăng Nhập
@@ -55,59 +52,56 @@
         <div class="bg-slate-900 border border-emerald-500/30 rounded-2xl p-4 text-xs space-y-2">
             <p class="font-bold text-emerald-400"><i class="fa-solid fa-link mr-1"></i> CẤU HÌNH ĐƯỜNG TRUYỀN PHÂN VÙNG GOOGLE SHEETS:</p>
             <div class="flex gap-2">
-                <input type="text" id="web-app-url-input" placeholder="Dán URL Web App từ Google Apps Script (đuôi /exec) vào đây..." class="flex-grow px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 focus:outline-none focus:border-emerald-500">
+                <input type="text" id="web-app-url-input" placeholder="Dán URL Web App mới sau khi deploy vào đây..." class="flex-grow px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 focus:outline-none focus:border-emerald-500">
                 <button onclick="saveWebAppUrl()" class="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-lg hover:bg-emerald-600 transition-all">Kết nối đám mây</button>
             </div>
-        </div>
-        
-        <!-- ADMIN CONTROL PANEL -->
-        <div id="admin-panel" class="bg-slate-900 border-2 border-dashed border-yellow-500/40 rounded-3xl p-6 space-y-4 hidden">
-            <div class="flex justify-between items-center">
-                <h3 class="heading-font text-lg font-bold text-yellow-400 flex items-center space-x-2">
-                    <i class="fa-solid fa-screwdriver-wrench"></i> <span>Quản Lý Ứng Viên Bầu Chọn</span>
-                </h3>
-                <span class="text-xs text-slate-400">Mật khẩu mặc định: <strong class="text-yellow-500">admin123</strong></span>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="admin-new-player-name" placeholder="Nhập tên ứng viên mới (Ví dụ: Khánh Linh)..." class="flex-grow px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-yellow-500">
-                <button onclick="addNewPlayer()" class="px-4 py-2 bg-yellow-500 text-slate-950 font-bold text-xs rounded-lg hover:bg-yellow-400 transition-all whitespace-nowrap">Thêm Ứng Viên</button>
-            </div>
-            <div id="admin-players-list-display" class="flex flex-wrap gap-2 max-h-24 overflow-y-auto sheet-scrollbar"></div>
         </div>
 
         <!-- INFO BANNER -->
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-800 rounded-3xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
             <div class="space-y-2">
-                <h2 class="heading-font text-2xl font-extrabold text-white">Hệ Thống Bỏ Phiếu Minh Bạch</h2>
-                <p class="text-slate-400 text-sm">Mỗi email chỉ được tham gia bầu chọn <span class="text-emerald-400 font-bold">duy nhất 1 lần</span>. Dữ liệu được đồng bộ trực tiếp lên Google Sheets để kiểm soát gian lận.</p>
+                <h2 class="heading-font text-2xl font-extrabold text-white">Hệ Thống Bỏ Phiếu Kết Nối Bảng Tính</h2>
+                <p class="text-slate-400 text-sm">Danh sách ứng viên được quản lý trực tiếp tại tab <span class="text-yellow-400 font-mono font-bold">DanhSachUngVien</span> trên Google Sheets.</p>
             </div>
             <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl text-center min-w-[220px]">
                 <span class="text-[10px] text-slate-500 font-bold uppercase block">Trạng thái cổng bình chọn</span>
-                <div id="countdown-timer" class="heading-font text-lg font-black text-emerald-400 my-1">ĐANG MỞ CHỜ VOTE</div>
+                <div class="heading-font text-lg font-black text-emerald-400 my-1">ĐANG MỞ CHỜ VOTE</div>
                 <button onclick="triggerEndSeason()" class="w-full mt-1 py-1.5 bg-rose-500 hover:bg-rose-600 text-white font-bold text-[11px] rounded-lg transition-all">Chốt Sổ & Reset Phiên</button>
             </div>
         </div>
 
-        <!-- LEADERBOARD & VOTE BOX -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Leaderboard -->
-            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-                <h3 class="heading-font text-lg font-bold text-white mb-4 flex items-center space-x-2">
-                    <i class="fa-solid fa-trophy text-amber-400"></i>
-                    <span>Bảng Xếp Hạng Kết Quả</span>
-                </h3>
-                <div id="leaderboard-list" class="space-y-3"></div>
-            </div>
-            <!-- Vote Box -->
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between min-h-[300px]">
+        <!-- TÁCH BIỆT KHU VỰC VOTE VÀ DANH SÁCH BẢNG XẾP HẠNG -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- KHU VỰC VOTE (VOTE BOX) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between min-h-[350px]">
                 <div>
-                    <h3 class="heading-font text-lg font-bold text-white mb-4"><i class="fa-solid fa-check-to-slot text-emerald-400 mr-2"></i>Chọn Ứng Viên</h3>
-                    <div id="voting-options" class="space-y-2"></div>
+                    <h3 class="heading-font text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-check-to-slot text-emerald-400"></i>
+                        <span>Cổng Bình Chọn Ứng Viên</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">Vui lòng chọn một trong những ứng viên đồng bộ từ Google Sheets để tiến hành bình chọn.</p>
+                    <div id="voting-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-64 overflow-y-auto sheet-scrollbar pr-1"></div>
                 </div>
-                <button id="submit-vote-btn" onclick="submitVote()" disabled class="w-full mt-6 py-3 bg-slate-800 text-slate-500 font-bold rounded-xl text-sm cursor-not-allowed transition-all">
-                    Vui lòng Đăng ký Email để bình chọn
-                </button>
+                <div>
+                    <button id="submit-vote-btn" onclick="submitVote()" disabled class="w-full mt-6 py-3 bg-slate-800 text-slate-500 font-bold rounded-xl text-sm cursor-not-allowed transition-all">
+                        Vui lòng Đăng ký Email để bình chọn
+                    </button>
+                </div>
             </div>
+
+            <!-- KHU VỰC DANH SÁCH (LEADERBOARD) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between min-h-[350px]">
+                <div>
+                    <h3 class="heading-font text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                        <i class="fa-solid fa-trophy text-amber-400"></i>
+                        <span>Bảng Xếp Hạng Kết Quả</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">Thứ hạng và tổng số phiếu bầu thực tế dựa trên dữ liệu nhật ký.</p>
+                    <div id="leaderboard-list" class="space-y-3 max-h-64 overflow-y-auto sheet-scrollbar pr-1"></div>
+                </div>
+            </div>
+
         </div>
 
         <!-- LIVE GOOGLE SHEETS VIEW -->
@@ -118,7 +112,7 @@
                     <span class="text-xs font-bold text-slate-200">Nhật Ký Phiếu Bầu Thực Tế (Google Sheets)</span>
                 </div>
                 <button onclick="pullDataFromGoogleSheets()" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 transition-all">
-                    <i class="fa-solid fa-rotate"></i> Làm mới dữ liệu
+                    <i class="fa-solid fa-rotate"></i> Làm mới dữ liệu từ Sheets
                 </button>
             </div>
             <div class="overflow-x-auto sheet-scrollbar bg-slate-950/40">
@@ -140,7 +134,7 @@
 
     <!-- FOOTER -->
     <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Hệ Thống Bỏ Phiếu Email Bảo Mật. Thiết kế mượt mà và chống gian lận tuyệt đối.</p>
+        <p>&copy; 2026 Hệ Thống Bỏ Phiếu Email Bảo Mật. Thiết kế đồng bộ Sheets tự động.</p>
     </footer>
 
     <!-- POPUP AUTH -->
@@ -150,7 +144,7 @@
             <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div class="text-center">
                     <h4 class="heading-font text-lg font-bold text-white">Đăng Ký Thông Tin Cử Tri</h4>
-                    <p class="text-xs text-slate-400 mt-1">Hệ thống ghi lại Email để tránh việc bỏ phiếu trùng lặp.</p>
+                    <p class="text-xs text-slate-400 mt-1">Mỗi Email chỉ được vote một lần duy nhất.</p>
                 </div>
                 <div>
                     <label class="block text-xs text-slate-400 font-bold mb-1">Họ và Tên</label>
@@ -169,13 +163,13 @@
 
     <!-- PUNISH MODAL -->
     <div id="punish-modal" class="fixed inset-0 bg-slate-950/90 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-yellow-500/30 max-w-md w-full rounded-2xl p-6 text-center space-y-4 animate-scaleUp">
+        <div class="bg-slate-900 border border-yellow-500/30 max-w-md w-full rounded-2xl p-6 text-center space-y-4">
             <h4 class="heading-font text-xl font-black text-yellow-400">CHỐT SỔ MÙA GIẢI!</h4>
             <div class="grid grid-cols-2 gap-2 text-sm">
-                <div class="bg-slate-950 p-3 rounded border border-slate-800">👑 Vua Thắng cuộc: <br><span id="punish-winner-name" class="font-bold text-emerald-400"></span></div>
-                <div class="bg-slate-950 p-3 rounded border border-slate-800">🚨 Người về Bét: <br><span id="punish-loser-name" class="font-bold text-rose-400"></span></div>
+                <div class="bg-slate-950 p-3 rounded border border-slate-800">👑 Thắng cuộc: <br><span id="punish-winner-name" class="font-bold text-emerald-400"></span></div>
+                <div class="bg-slate-950 p-3 rounded border border-slate-800">🚨 Về Bét: <br><span id="punish-loser-name" class="font-bold text-rose-400"></span></div>
             </div>
-            <p class="text-xs text-slate-400">Hành động này sẽ xóa dữ liệu trên Google Sheets để chuẩn bị cho mùa bình chọn mới.</p>
+            <p class="text-xs text-slate-400">Hành động này sẽ xóa dữ liệu lịch sử trên file Sheets.</p>
             <div class="flex gap-2">
                 <button onclick="document.getElementById('punish-modal').classList.add('hidden')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg text-sm transition-all">Hủy bỏ</button>
                 <button onclick="handlePunishmentSubmit()" class="flex-1 py-2 bg-yellow-500 text-slate-950 font-bold rounded-lg text-sm hover:bg-yellow-400 transition-all">Thực Thi & Reset</button>
@@ -183,7 +177,7 @@
         </div>
     </div>
 
-    <!-- CUSTOM CONFIRMATION MODAL (Thay thế cho confirm() của trình duyệt) -->
+    <!-- CUSTOM CONFIRMATION MODAL -->
     <div id="confirm-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 border border-slate-800 max-w-sm w-full rounded-2xl p-6 text-center space-y-4">
             <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto">
@@ -198,7 +192,7 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION CONTAINER (Thay thế cho alert() của trình duyệt) -->
+    <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-2 pointer-events-none"></div>
 
     <script>
@@ -206,217 +200,124 @@
         let currentUser = null;
         let selectedCandidateId = null;
         let votesDatabase = [];
-        let isAdminUnlocked = false;
         let WEB_APP_URL = ""; 
 
-        const ADMIN_PASSWORD_HASH = "admin123";
-        const DEFAULT_PLAYERS = [
-        ];
-
-        // --- KHỞI TẠO TOÀN BỘ ỨNG DỤNG ---
         function initApp() {
-            // Tự động gán đường dẫn mặc định của người dùng nếu chưa có cấu hình trong localStorage
             const defaultUrl = "https://script.google.com/macros/s/AKfycbzstwbJVyMZLni2JNGr7yz-ei0WGdmreFXohnpVcU2loBwhWu7N7zPsXYCV5BvFnXVPpw/exec";
             WEB_APP_URL = localStorage.getItem('google_sheet_web_app_url') || defaultUrl;
-            
-            // Lưu lại đường dẫn mặc định này vào localStorage luôn để tiện quản lý
-            if (!localStorage.getItem('google_sheet_web_app_url')) {
-                localStorage.setItem('google_sheet_web_app_url', defaultUrl);
-            }
-
             document.getElementById('web-app-url-input').value = WEB_APP_URL;
 
-            // Đồng bộ dữ liệu ứng viên & người dùng đăng ký trước đó
-            playersList = JSON.parse(localStorage.getItem('cloud_players')) || DEFAULT_PLAYERS;
+            playersList = JSON.parse(localStorage.getItem('cloud_players')) || [];
             votesDatabase = JSON.parse(localStorage.getItem('cloud_votes')) || [];
             currentUser = JSON.parse(localStorage.getItem('cloud_voter'));
 
             updateAuthUI();
-            syncAndCalculateVotes();
             renderUI();
-            renderAdminPlayers();
             
             if (WEB_APP_URL) {
                 pullDataFromGoogleSheets();
             }
         }
 
-        // --- HỆ THỐNG THÔNG BÁO TOAST (THAY THẾ ALERT) ---
         function triggerToast(message, type = "success") {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `p-4 rounded-xl shadow-2xl border transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-auto flex items-center space-x-3 text-xs max-w-xs font-semibold ${
                 type === "success" ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" :
-                type === "error" ? "bg-rose-500/10 border-rose-500/30 text-rose-400" :
-                "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                type === "error" ? "bg-rose-500/10 border-rose-500/30 text-rose-400" : "bg-amber-500/10 border-amber-500/30 text-amber-400"
             }`;
-            
-            let icon = '<i class="fa-solid fa-circle-check"></i>';
-            if(type === "error") icon = '<i class="fa-solid fa-circle-exclamation"></i>';
-            if(type === "warning") icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
-
+            let icon = type === "error" ? '<i class="fa-solid fa-circle-exclamation"></i>' : (type === "warning" ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-circle-check"></i>');
             toast.innerHTML = `${icon} <span>${message}</span>`;
             container.appendChild(toast);
-
-            // Animate In
-            setTimeout(() => {
-                toast.classList.remove('translate-y-10', 'opacity-0');
-            }, 10);
-
-            // Animate Out & Clear
-            setTimeout(() => {
-                toast.classList.add('translate-y-10', 'opacity-0');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, 3500);
+            setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('translate-y-10', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 3500);
         }
 
-        // --- MODAL XÁC NHẬN TÙY CHỈNH (THAY THẾ CONFIRM) ---
-        function triggerConfirm(message, title = "Xác nhận hành động", onConfirm) {
+        function triggerConfirm(message, title = "Xác nhận", onConfirm) {
             const modal = document.getElementById('confirm-modal');
-            const titleEl = document.getElementById('confirm-title');
-            const msgEl = document.getElementById('confirm-message');
-            const okBtn = document.getElementById('confirm-ok-btn');
-            const cancelBtn = document.getElementById('confirm-cancel-btn');
-
-            titleEl.innerText = title;
-            msgEl.innerText = message;
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
             modal.classList.remove('hidden');
-
-            const cleanUp = () => {
-                modal.classList.add('hidden');
-                okBtn.onclick = null;
-                cancelBtn.onclick = null;
-            };
-
-            okBtn.onclick = () => {
-                cleanUp();
-                if (typeof onConfirm === 'function') onConfirm();
-            };
-
-            cancelBtn.onclick = () => {
-                cleanUp();
-            };
+            document.getElementById('confirm-ok-btn').onclick = () => { modal.classList.add('hidden'); if(onConfirm) onConfirm(); };
+            document.getElementById('confirm-cancel-btn').onclick = () => modal.classList.add('hidden');
         }
 
-        // Lưu URL Google Web App
         function saveWebAppUrl() {
             const url = document.getElementById('web-app-url-input').value.trim();
             if (url) {
                 localStorage.setItem('google_sheet_web_app_url', url);
                 WEB_APP_URL = url;
-                triggerToast("Kết nối Cổng dữ liệu Google Sheets thành công!", "success");
+                triggerToast("Kết nối thành công!", "success");
                 pullDataFromGoogleSheets();
-            } else {
-                triggerToast("Vui lòng điền đúng URL Web App!", "error");
             }
         }
 
-        // KÉO DỮ LIỆU TỪ SHEET VỀ ĐỂ ĐỒNG BỘ TOÀN HỆ THỐNG
         function pullDataFromGoogleSheets() {
             if (!WEB_APP_URL) return;
-            
-            // Hiển thị trạng thái đang làm mới dữ liệu
-            const btn = document.getElementById('submit-vote-btn');
-            if (currentUser) btn.innerText = "Đang đồng bộ cổng dữ liệu...";
-
             fetch(WEB_APP_URL)
             .then(res => res.json())
             .then(data => {
-                if (data && Array.isArray(data)) {
-                    votesDatabase = data;
+                if (data) {
+                    // Nhận cấu trúc Object {votes: [], players: []} mới từ Apps Script
+                    votesDatabase = data.votes || [];
+                    playersList = data.players || [];
+                    
                     localStorage.setItem('cloud_votes', JSON.stringify(votesDatabase));
-                    syncAndCalculateVotes();
+                    localStorage.setItem('cloud_players', JSON.stringify(playersList));
+                    
+                    calculateVotes();
                     renderUI();
                     checkIfUserAlreadyVoted();
                 }
             })
-            .catch(err => {
-                console.error("Không thể đồng bộ từ Google Sheets:", err);
-            })
-            .finally(() => {
-                if (currentUser) checkIfUserAlreadyVoted();
-            });
+            .catch(err => console.error("Lỗi tải Sheets:", err));
         }
 
-        // ĐẨY PHIẾU VOTE LÊN GOOGLE SHEETS
-        function pushVoteToGoogleSheets(timestamp, name, email, voteFor) {
-            if (!WEB_APP_URL) {
-                triggerToast("Vui lòng thiết lập URL Google Sheet ở đầu trang trước!", "warning");
-                return;
-            }
-            
-            const formData = new FormData();
-            formData.append("timestamp", timestamp);
-            formData.append("name", name);
-            formData.append("email", email);
-            formData.append("voteFor", voteFor);
-
-            fetch(WEB_APP_URL, { 
-                method: "POST", 
-                body: formData 
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === "success") {
-                    console.log("Đã ghi nhận lên Sheet thành công.");
-                    pullDataFromGoogleSheets(); // Tải lại dữ liệu mới nhất
-                }
-            })
-            .catch(err => { 
-                console.error("Lỗi đồng bộ đám mây:", err); 
-                triggerToast("Lưu dữ liệu lên Google Sheets thất bại nhưng đã được lưu trữ tạm thời tại bộ nhớ trình duyệt.", "warning");
-            });
-        }
-
-        function syncAndCalculateVotes() {
-            // Reset điểm số
+        function calculateVotes() {
+            // Đặt điểm số về 0 và tính toán lại dựa trên nhật ký vote thực tế
             playersList.forEach(p => p.votes = 0);
-            
-            // Tính toán phiếu bầu dựa trên dữ liệu nhật ký
             votesDatabase.forEach(log => {
-                const target = playersList.find(p => p.name === log.voteFor);
+                const target = playersList.find(p => p.name.toLowerCase() === String(log.voteFor).trim().toLowerCase());
                 if (target) target.votes++;
             });
-            localStorage.setItem('cloud_players', JSON.stringify(playersList));
         }
 
         function renderUI() {
-            // Render Bảng Xếp Hạng
+            // Render Bảng Xếp Hạng Kết Quả
             const lb = document.getElementById('leaderboard-list');
             lb.innerHTML = '';
             const sorted = [...playersList].sort((a,b)=> b.votes - a.votes);
+            if (sorted.length === 0) {
+                lb.innerHTML = `<div class="p-4 text-center text-xs text-slate-500">Chưa có ứng viên nào từ tab "DanhSachUngVien"</div>`;
+            }
             sorted.forEach((p, idx) => {
                 lb.innerHTML += `
                     <div class="p-3 bg-slate-950/40 border border-slate-800 rounded-xl flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-slate-500 mr-2">#${idx+1}</span>
-                            <span class="font-bold text-white">${p.name}</span>
-                        </div>
-                        <div class="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-lg">
-                            ${p.votes} phiếu
-                        </div>
+                        <div><span class="font-bold text-slate-500 mr-2">#${idx+1}</span><span class="font-bold text-white">${p.name}</span></div>
+                        <div class="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-lg">${p.votes} phiếu</div>
                     </div>`;
             });
 
-            // Render Chọn Ứng Viên Bầu
+            // Render Chọn Ứng Viên Bầu Chọn (Vote Box)
             const vo = document.getElementById('voting-options');
             vo.innerHTML = '';
+            if (playersList.length === 0) {
+                vo.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-slate-500">Hãy thêm ứng viên vào cột A của Tab "DanhSachUngVien" trên Sheets rồi nhấn làm mới.</div>`;
+            }
             playersList.forEach(p => {
                 const isSel = selectedCandidateId === p.id;
                 vo.innerHTML += `
                     <div onclick="selectCandidate('${p.id}')" class="p-3 border transition-all ${isSel?'border-emerald-500 text-emerald-400 bg-emerald-500/5 font-bold':'border-slate-800 hover:border-slate-700'} rounded-xl cursor-pointer text-sm flex justify-between items-center">
-                        <span>${p.name}</span>
+                        <span class="truncate max-w-[140px]">${p.name}</span>
                         ${isSel ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : '<i class="fa-regular fa-circle text-slate-600"></i>'}
                     </div>`;
             });
 
-            // Render Nhật Ký Spreadsheet trên web
+            // Render Log hiển thị phía dưới
             const sv = document.getElementById('sheet-vote-log-view');
             sv.innerHTML = '';
             if (votesDatabase.length === 0) {
-                sv.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-600">Chưa có phiếu bầu nào được ghi nhận. Hãy là người đầu tiên!</td></tr>`;
+                sv.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-600">Chưa có phiếu bầu thực tế.</td></tr>`;
             } else {
                 votesDatabase.forEach((r, i) => {
                     sv.innerHTML += `
@@ -431,89 +332,64 @@
             }
         }
 
-        function selectCandidate(id) {
-            selectedCandidateId = id;
-            renderUI();
-            checkIfUserAlreadyVoted();
-        }
+        function selectCandidate(id) { selectedCandidateId = id; renderUI(); checkIfUserAlreadyVoted(); }
 
-        // HÀM KHÓA GIAN LẬN: KIỂM TRA EMAIL ĐÃ VOTE CHƯA ĐỂ VÔ HIỆU HÓA NÚT VOTE
         function checkIfUserAlreadyVoted() {
             const btn = document.getElementById('submit-vote-btn');
-            
             if (!currentUser) {
-                btn.disabled = true;
-                btn.className = "w-full mt-4 py-3 bg-slate-800 text-slate-500 font-bold rounded-xl text-sm cursor-not-allowed";
-                btn.innerText = "Vui lòng Đăng ký Email để bình chọn";
-                return;
+                btn.disabled = true; btn.className = "w-full mt-4 py-3 bg-slate-800 text-slate-500 font-bold rounded-xl text-sm cursor-not-allowed";
+                btn.innerText = "Vui lòng Đăng ký Email để bình chọn"; return;
             }
-
-            // Kiểm tra trùng Email trong lịch sử kéo về từ Google Sheets
             const isEmailVoted = votesDatabase.some(v => String(v.email).trim().toLowerCase() === String(currentUser.email).trim().toLowerCase());
-            
             if (isEmailVoted) {
-                btn.disabled = true;
-                btn.className = "w-full mt-4 py-3 bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold rounded-xl text-sm cursor-not-allowed";
-                btn.innerHTML = `<i class="fa-solid fa-ban mr-1"></i> Email của bạn đã thực hiện vote rồi!`;
+                btn.disabled = true; btn.className = "w-full mt-4 py-3 bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold rounded-xl text-sm cursor-not-allowed";
+                btn.innerHTML = `<i class="fa-solid fa-ban mr-1"></i> Email của bạn đã vote rồi!`;
             } else if (selectedCandidateId) {
-                btn.disabled = false;
-                btn.className = "w-full mt-4 py-3 bg-emerald-500 text-slate-950 font-black rounded-xl text-sm cursor-pointer shadow-lg hover:bg-emerald-400 active:scale-[0.98] transition-all";
+                btn.disabled = false; btn.className = "w-full mt-4 py-3 bg-emerald-500 text-slate-950 font-black rounded-xl text-sm cursor-pointer shadow-lg hover:bg-emerald-400 transition-all";
                 btn.innerText = "Xác nhận gửi phiếu bầu";
             } else {
-                btn.disabled = true;
-                btn.className = "w-full mt-4 py-3 bg-slate-800 text-slate-400 font-bold rounded-xl text-sm cursor-not-allowed";
+                btn.disabled = true; btn.className = "w-full mt-4 py-3 bg-slate-800 text-slate-400 font-bold rounded-xl text-sm cursor-not-allowed";
                 btn.innerText = "Vui lòng chọn 1 ứng viên phía trên";
             }
         }
 
         function submitVote() {
             if (!currentUser || !selectedCandidateId) return;
-            
-            // Chống gian lận lần 2 trên client-side
-            const isEmailVoted = votesDatabase.some(v => String(v.email).trim().toLowerCase() === String(currentUser.email).trim().toLowerCase());
-            if (isEmailVoted) {
-                triggerToast("Email này đã biểu quyết rồi! Hệ thống từ chối nhận thêm.", "error"); 
-                checkIfUserAlreadyVoted();
-                return;
-            }
-
             const candidate = playersList.find(p => p.id === selectedCandidateId);
             const now = new Date();
             const ts = `${now.toLocaleDateString('vi-VN')} ${now.toLocaleTimeString('vi-VN')}`;
 
-            // Cập nhật tạm thời lên màn hình
-            const newRecord = { timestamp: ts, name: currentUser.name, email: currentUser.email, voteFor: candidate.name };
-            votesDatabase.unshift(newRecord);
-            localStorage.setItem('cloud_votes', JSON.stringify(votesDatabase));
-            
-            // GỬI ĐỒNG BỘ CLOUD GOOGLE SHEETS
-            pushVoteToGoogleSheets(ts, currentUser.name, currentUser.email, candidate.name);
+            const formData = new FormData();
+            formData.append("timestamp", ts);
+            formData.append("name", currentUser.name);
+            formData.append("email", currentUser.email);
+            formData.append("voteFor", candidate.name);
 
-            syncAndCalculateVotes();
-            renderUI();
-            checkIfUserAlreadyVoted();
-            
-            // Hiệu ứng pháo hoa ăn mừng
-            confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-            triggerToast("Bình chọn thành công! Cảm ơn bạn đã tham gia.", "success");
+            btn = document.getElementById('submit-vote-btn');
+            btn.disabled = true;
+            btn.innerText = "Đang gửi dữ liệu...";
+
+            fetch(WEB_APP_URL, { method: "POST", body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+                    triggerToast("Bình chọn thành công!", "success");
+                    pullDataFromGoogleSheets();
+                }
+            })
+            .catch(err => { triggerToast("Lỗi đẩy dữ liệu lên đám mây!", "error"); console.error(err); });
         }
 
-        // ĐĂNG KÝ THÀNH VIÊN
         function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
         
         function handleAuthSubmit(e) {
             e.preventDefault();
-            const inputName = document.getElementById('auth-name').value.trim();
-            const inputEmail = document.getElementById('auth-email').value.trim();
-            
-            currentUser = { name: inputName, email: inputEmail };
+            currentUser = { name: document.getElementById('auth-name').value.trim(), email: document.getElementById('auth-email').value.trim() };
             localStorage.setItem('cloud_voter', JSON.stringify(currentUser));
-            
-            closeAuthModal();
-            updateAuthUI();
-            checkIfUserAlreadyVoted();
-            triggerToast(`Chào mừng ${inputName}, bạn đã xác thực Email thành công!`, "success");
+            closeAuthModal(); updateAuthUI(); checkIfUserAlreadyVoted();
+            triggerToast(`Chào mừng ${currentUser.name}!`, "success");
         }
 
         function updateAuthUI() {
@@ -522,137 +398,18 @@
                 container.innerHTML = `
                     <div class="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl flex items-center space-x-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
-                        <span class="text-xs font-bold text-slate-200">${currentUser.name} (${currentUser.email})</span>
-                        <button onclick="logout()" class="text-slate-500 hover:text-rose-400 ml-2 text-xs font-bold" title="Đăng xuất">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        </button>
+                        <span class="text-xs font-bold text-slate-200">${currentUser.name}</span>
+                        <button onclick="logout()" class="text-slate-500 hover:text-rose-400 ml-2 text-xs font-bold"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                     </div>`;
             }
         }
 
-        function logout() {
-            triggerConfirm("Bạn có muốn đăng xuất tài khoản email hiện tại không?", "Xác nhận đăng xuất", () => {
-                localStorage.removeItem('cloud_voter');
-                currentUser = null;
-                window.location.reload();
-            });
-        }
-
-        // PANEL QUẢN TRỊ ADMIN (MẬT KHẨU: admin123)
-        function toggleAdminPanel() {
-            if (isAdminUnlocked) {
-                isAdminUnlocked = false; 
-                document.getElementById('admin-panel').classList.add('hidden');
-            } else {
-                const pass = prompt("Nhập Mật khẩu Quản trị viên (Mặc định):");
-                if (pass === ADMIN_PASSWORD_HASH) {
-                    isAdminUnlocked = true; 
-                    document.getElementById('admin-panel').classList.remove('hidden');
-                    triggerToast("Bảng quản trị viên đã được mở khóa!", "success");
-                } else if (pass !== null) {
-                    triggerToast("Sai mật khẩu!", "error");
-                }
-            }
-        }
-
-        // THÊM ỨNG VIÊN MỚI
-        function addNewPlayer() {
-            const input = document.getElementById('admin-new-player-name');
-            const name = input.value.trim();
-            if (name) {
-                // Kiểm tra tên trùng
-                if (playersList.some(p => p.name.toLowerCase() === name.toLowerCase())) {
-                    triggerToast("Tên ứng viên này đã tồn tại!", "error");
-                    return;
-                }
-                playersList.push({ id: "p_" + Date.now(), name: name, votes: 0 });
-                localStorage.setItem('cloud_players', JSON.stringify(playersList));
-                input.value = ''; 
-                renderUI(); 
-                renderAdminPlayers();
-                triggerToast(`Đã thêm ứng viên ${name} thành công.`, "success");
-            }
-        }
-
-        // XOÁ ỨNG VIÊN (Chức năng mới thêm vào)
-        function deletePlayer(id, name) {
-            triggerConfirm(`Bạn có chắc chắn muốn xoá ứng viên "${name}" khỏi danh sách không?`, "Xác nhận xoá ứng viên", () => {
-                playersList = playersList.filter(p => p.id !== id);
-                localStorage.setItem('cloud_players', JSON.stringify(playersList));
-                
-                // Nếu ứng viên đang chọn bị xoá thì bỏ chọn
-                if (selectedCandidateId === id) {
-                    selectedCandidateId = null;
-                }
-                
-                syncAndCalculateVotes();
-                renderUI();
-                renderAdminPlayers();
-                checkIfUserAlreadyVoted();
-                triggerToast(`Đã xoá ứng viên "${name}" thành công.`, "success");
-            });
-        }
-
-        function renderAdminPlayers() {
-            const container = document.getElementById('admin-players-list-display');
-            container.innerHTML = '';
-            playersList.forEach(p => { 
-                container.innerHTML += `
-                    <span class="bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded text-xs font-semibold flex items-center gap-1.5">
-                        <span>${p.name}</span>
-                        <button onclick="deletePlayer('${p.id}', '${p.name}')" class="text-rose-400 hover:text-rose-500 ml-1 font-bold focus:outline-none" title="Xoá ứng viên này">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </button>
-                    </span>`; 
-            });
-        }
-
-        // KẾT THÚC VÀ RESET PHÂN VÙNG GOOGLE SHEET
-        function triggerEndSeason() {
-            if (playersList.length === 0 || votesDatabase.length === 0) { 
-                triggerToast("Chưa có đủ dữ liệu biểu quyết để chốt sổ!", "warning"); 
-                return; 
-            }
-            const sorted = [...playersList].sort((a,b)=> b.votes - a.votes);
-            document.getElementById('punish-winner-name').innerText = sorted[0].name;
-            document.getElementById('punish-loser-name').innerText = sorted[sorted.length-1].name;
-            document.getElementById('punish-modal').classList.remove('hidden');
-        }
-
+        function logout() { triggerConfirm("Đăng xuất tài khoản email?", "Xác nhận", () => { localStorage.removeItem('cloud_voter'); location.reload(); }); }
+        function triggerEndSeason() { if(playersList.length === 0) return; const sorted = [...playersList].sort((a,b)=> b.votes - a.votes); document.getElementById('punish-winner-name').innerText = sorted[0].name; document.getElementById('punish-loser-name').innerText = sorted[sorted.length-1].name; document.getElementById('punish-modal').classList.remove('hidden'); }
+        
         function handlePunishmentSubmit() {
-            if (!WEB_APP_URL) {
-                triggerToast("Hãy kết nối URL Web App Google Sheets trước khi thực hiện!", "error");
-                return;
-            }
-            triggerConfirm(
-                "Xác nhận: Hành động này sẽ gửi yêu cầu và XÓA SẠCH toàn bộ hàng dữ liệu hiện tại trên Google Sheets để làm trống bảng tính?",
-                "Xác nhận dọn dẹp Google Sheets",
-                () => {
-                    const formData = new FormData();
-                    formData.append("action", "clear");
-                    
-                    fetch(WEB_APP_URL, { 
-                        method: "POST", 
-                        body: formData 
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            votesDatabase = [];
-                            localStorage.setItem('cloud_votes', JSON.stringify(votesDatabase));
-                            document.getElementById('punish-modal').classList.add('hidden');
-                            syncAndCalculateVotes();
-                            renderUI();
-                            checkIfUserAlreadyVoted();
-                            triggerToast("Đã thiết lập lại trạng thái Google Sheets trống thành công!", "success");
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Lỗi khi xóa Sheets:", err);
-                        triggerToast("Không thể xóa trên Google Sheets. Hãy kiểm tra kết nối Web App hoặc xóa dữ liệu thủ công.", "error");
-                    });
-                }
-            );
+            const formData = new FormData(); formData.append("action", "clear");
+            fetch(WEB_APP_URL, { method: "POST", body: formData }).then(res => res.json()).then(data => { if (data.status === "success") { document.getElementById('punish-modal').classList.add('hidden'); pullDataFromGoogleSheets(); triggerToast("Đã reset lịch sử vote!", "success"); } });
         }
 
         window.onload = initApp;
