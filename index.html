@@ -211,7 +211,7 @@
 
         const ADMIN_PASSWORD_HASH = "admin123";
         const DEFAULT_PLAYERS = [
-            { id: "p_1", name: , votes:  },
+            { id: "p_1", name: "", votes: 0 },
         ];
 
         // --- KHỞI TẠO TOÀN BỘ ỨNG DỤNG ---
@@ -323,12 +323,7 @@
             if (currentUser) btn.innerText = "Đang đồng bộ cổng dữ liệu...";
 
             fetch(WEB_APP_URL)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`Mã lỗi HTTP: ${res.status}. Vui lòng kiểm tra lại cấu hình triển khai Apps Script.`);
-                }
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
                 if (data && Array.isArray(data)) {
                     votesDatabase = data;
@@ -336,53 +331,13 @@
                     syncAndCalculateVotes();
                     renderUI();
                     checkIfUserAlreadyVoted();
-                } else {
-                    throw new Error("Định dạng dữ liệu trả về từ Google Sheets không hợp lệ (Không phải danh sách Array).");
                 }
             })
             .catch(err => {
                 console.error("Không thể đồng bộ từ Google Sheets:", err);
-                triggerToast(`Lỗi kết nối đám mây: ${err.message || "Kết nối bị từ chối (CORS). Hãy kiểm tra xem bạn đã chọn quyền truy cập là 'Anyone' chưa?"}`, "error");
             })
             .finally(() => {
                 if (currentUser) checkIfUserAlreadyVoted();
-            });
-        }
-
-        // ĐẨY PHIẾU VOTE LÊN GOOGLE SHEETS
-        function pushVoteToGoogleSheets(timestamp, name, email, voteFor) {
-            if (!WEB_APP_URL) {
-                triggerToast("Vui lòng thiết lập URL Google Sheet ở đầu trang trước!", "warning");
-                return;
-            }
-            
-            const formData = new FormData();
-            formData.append("timestamp", timestamp);
-            formData.append("name", name);
-            formData.append("email", email);
-            formData.append("voteFor", voteFor);
-
-            fetch(WEB_APP_URL, { 
-                method: "POST", 
-                body: formData 
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`Phản hồi máy chủ lỗi: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.status === "success") {
-                    console.log("Đã ghi nhận lên Sheet thành công.");
-                    pullDataFromGoogleSheets(); // Tải lại dữ liệu mới nhất
-                } else {
-                    throw new Error(data.message || "Máy chủ từ chối ghi dữ liệu.");
-                }
-            })
-            .catch(err => { 
-                console.error("Lỗi đồng bộ đám mây:", err); 
-                triggerToast(`Lỗi sao lưu Google Sheets: ${err.message || "Không thể gửi yêu cầu CORS POST. Hãy đảm bảo deploy Apps Script đúng cách."}`, "warning");
             });
         }
 
@@ -590,7 +545,7 @@
                 isAdminUnlocked = false; 
                 document.getElementById('admin-panel').classList.add('hidden');
             } else {
-                const pass = prompt("Nhập Mật khẩu Quản trị viên (Mặc định: admin123):");
+                const pass = prompt("Nhập Mật khẩu Quản trị viên (Mặc định):");
                 if (pass === ADMIN_PASSWORD_HASH) {
                     isAdminUnlocked = true; 
                     document.getElementById('admin-panel').classList.remove('hidden');
