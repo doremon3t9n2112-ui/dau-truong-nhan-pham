@@ -203,7 +203,8 @@
         let WEB_APP_URL = ""; 
 
         function initApp() {
-            const defaultUrl = "https://script.google.com/macros/s/AKfycbzstwbJVyMZLni2JNGr7yz-ei0WGdmreFXohnpVcU2loBwhWu7N7zPsXYCV5BvFnXVPpw/exec";
+            // ĐÃ THAY ĐỔI: Chèn trực tiếp URL Web App của bạn vào đây
+            const defaultUrl = "https://script.google.com/macros/s/AKfycby_ctag7k6RjnIvuzHJll6rv_O15e-8mURrzSah_VawpzR-mCEF7ffamivy6V8lf4rRgg/exec";
             WEB_APP_URL = localStorage.getItem('google_sheet_web_app_url') || defaultUrl;
             document.getElementById('web-app-url-input').value = WEB_APP_URL;
 
@@ -258,7 +259,6 @@
             .then(res => res.json())
             .then(data => {
                 if (data) {
-                    // Nhận cấu trúc Object {votes: [], players: []} mới từ Apps Script
                     votesDatabase = data.votes || [];
                     playersList = data.players || [];
                     
@@ -274,7 +274,6 @@
         }
 
         function calculateVotes() {
-            // Đặt điểm số về 0 và tính toán lại dựa trên nhật ký vote thực tế
             playersList.forEach(p => p.votes = 0);
             votesDatabase.forEach(log => {
                 const target = playersList.find(p => p.name.toLowerCase() === String(log.voteFor).trim().toLowerCase());
@@ -283,7 +282,6 @@
         }
 
         function renderUI() {
-            // Render Bảng Xếp Hạng Kết Quả
             const lb = document.getElementById('leaderboard-list');
             lb.innerHTML = '';
             const sorted = [...playersList].sort((a,b)=> b.votes - a.votes);
@@ -298,7 +296,6 @@
                     </div>`;
             });
 
-            // Render Chọn Ứng Viên Bầu Chọn (Vote Box)
             const vo = document.getElementById('voting-options');
             vo.innerHTML = '';
             if (playersList.length === 0) {
@@ -313,7 +310,6 @@
                     </div>`;
             });
 
-            // Render Log hiển thị phía dưới
             const sv = document.getElementById('sheet-vote-log-view');
             sv.innerHTML = '';
             if (votesDatabase.length === 0) {
