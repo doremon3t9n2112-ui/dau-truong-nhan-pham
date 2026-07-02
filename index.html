@@ -107,24 +107,30 @@
                         class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm bg-slate-50/50 placeholder:text-slate-400">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Vật tư cần đặt đặt / Báo giá <span class="text-red-500">*</span></label>
-                    <select name="product" required 
-                        class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm bg-slate-50/50 text-slate-700">
-                        <option value="" disabled selected>Chọn loại vật liệu chính...</option>
-                        <option value="Sắt thép xây dựng">Sắt thép xây dựng (Hòa Phát, Pomina...)</option>
-                        <option value="Xi măng các loại">Xi măng các loại (Hà Tiên, Insee...)</option>
-                        <option value="Cát xây dựng (Cát tô, cát đúc)">Cát xây dựng (Cát tô, cát đúc...)</option>
-                        <option value="Đá 1x2, Đá 4x6">Đá thô (Đá 1x2, 4x6, đá mi...)</option>
-                        <option value="Gạch ống, Gạch Block">Gạch ống, Gạch Block</option>
-                        <option value="Đặt trọn gói combo móng/thô">Đặt trọn gói vật tư phần móng / thô</option>
-                        <option value="Khác">Vật tư khác (Ghi chú chi tiết bên dưới)</option>
-                    </select>
+                <div class="grid sm:grid-cols-3 gap-6">
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Vật tư cần đặt <span class="text-red-500">*</span></label>
+                        <select name="product" required 
+                            class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm bg-slate-50/50 text-slate-700">
+                            <option value="" disabled selected>Chọn loại vật liệu chính...</option>
+                            <option value="Sắt thép xây dựng">Sắt thép xây dựng (Hòa Phát, Pomina...)</option>
+                            <option value="Xi măng các loại">Xi măng các loại (Hà Tiên, Insee...)</option>
+                            <option value="Cát xây dựng (Cát tô, cát đúc)">Cát xây dựng (Cát tô, cát đúc...)</option>
+                            <option value="Đá 1x2, Đá 4x6">Đá thô (Đá 1x2, 4x6, đá mi...)</option>
+                            <option value="Gạch ống, Gạch Block">Gạch ống, Gạch Block</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số lượng đặt <span class="text-red-500">*</span></label>
+                        <input type="number" name="quantity" min="1" required placeholder="Ví dụ: 50" 
+                            class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm bg-slate-50/50 placeholder:text-slate-400">
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Chi tiết số lượng hoặc yêu cầu khác</label>
-                    <textarea name="note" rows="4" placeholder="Ví dụ: Cần 50 bao xi măng Hà Tiên Đa Dụng và 2 khối cát tô. Giao vào sáng mai..." 
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Đơn vị tính hoặc lưu ý đặc biệt</label>
+                    <textarea name="note" rows="3" placeholder="Ví dụ: Đơn vị tính bằng Bao/Khối/Tấn. Giao xe ben nhỏ vì đường hẻm..." 
                         class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm bg-slate-50/50 placeholder:text-slate-400"></textarea>
                 </div>
 
@@ -139,45 +145,41 @@
     <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 text-center text-xs">
             <p class="font-semibold text-slate-300">© 2026 VLXD SONG THỊNH. All rights reserved.</p>
-            <p class="mt-1">Hệ thống tiếp nhận đơn hàng tự động thông minh.</p>
+            <p class="mt-1">Hệ thống tiếp nhận đơn hàng tự động thông minh liên kết Google Sheets.</p>
         </div>
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywuXs3vPudX6Pwwbu52VI-QEN5J-iubESDpPn0CYXiFVCkYuzP0YPsE9RcT_m2XzbGvQ/exec'; // <--- THAY LINK GOOGLE APPS SCRIPT VÀO ĐÂY
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyEOh7EnE53148NFxqzsKXL7YjoxIR_87JC0f2We_rwX-PXYio8JXocYs8tAgdDu4uatw/exec'; // <--- THAY LINK GOOGLE APPS SCRIPT CỦA BẠN VÀO ĐÂY
         const form = document.getElementById('tg-form');
         const submitBtn = document.getElementById('submit-btn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // Đổi trạng thái nút khi đang gửi
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Đang xử lý dữ liệu...`;
 
-            // Thu thập dữ liệu từ Form chuyển đổi thành JSON Object
             const formData = new FormData(form);
             const object = {};
             formData.forEach((value, key) => object[key] = value);
 
-            // Gửi dữ liệu bằng Fetch API POST
             fetch(scriptURL, { 
                 method: 'POST', 
                 body: JSON.stringify(object),
                 headers: {
-                    'Content-Type': 'text/plain;charset=utf-8' // Tránh lỗi CORS chuẩn hóa đối với Google Apps Script
+                    'Content-Type': 'text/plain;charset=utf-8'
                 }
             })
             .then(response => {
-                alert('🎉 Cảm ơn quý khách! VLXD SONG THỊNH đã nhận được đơn hàng và sẽ liên hệ lại ngay.');
-                form.reset(); // Xóa sạch form
+                alert('🎉 Cảm ơn quý khách! VLXD SONG THỊNH đã nhận được đơn hàng và số lượng yêu cầu. Chúng tôi sẽ liên hệ báo giá ngay!');
+                form.reset();
             })
             .catch(error => {
                 console.error('Lỗi rồi!', error.message);
-                alert('Có lỗi xảy ra trong quá trình gửi. Vui lòng liên hệ trực tiếp số hotline!');
+                alert('Có lỗi xảy ra khi gửi thông tin. Bạn hãy liên hệ hotline trực tiếp nhé!');
             })
             .finally(() => {
-                // Trả lại trạng thái nút ban đầu
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> GỬI YÊU CẦU ĐẶT HÀNG`;
             });
